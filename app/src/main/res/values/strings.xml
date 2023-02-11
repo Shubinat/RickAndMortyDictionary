@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Rick And Morty Dictionary</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <!-- hello_fragment -->
+    <string name="hello_fragment_title">Welcome to the Rick And Morty Dictionary!</string>
+    <string name="hello_fragment_image_content_description">Rick And Morty Dictionary</string>
+    <string name="hello_fragment_start_button_text">Let\'s go!</string>
+    <string name="hello_fragment_description">In this guide you will learn about all the characters of the animated series Rick And Morty</string>
+    <!-- character_item -->
+    <string name="character_item_status_label">Status:</string>
+    <string name="character_item_species_label">Species:</string>
+    <string name="character_item_gender_label">Gender:</string>
+    <string name="character_item_image_description">Character Photo</string>
+    <string name="fragment_main_button_previous">Previous</string>
+    <string name="fragment_main_button_next">Next</string>
+</resources>
