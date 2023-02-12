@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textColor="#689F38"
+                    android:textColor="@color/green_secondary"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="Rick Sanchez" />
@@ -70,7 +70,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_status_label"
+                        android:id="@+id/tv_episode_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -78,7 +78,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tv_status_value"
+                        android:id="@+id/tv_episode_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
