@@ -19,5 +19,22 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.rickandmortydictionary.presentation.fragments.MainFragment"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_characterDetailsFragment"
+            app:destination="@id/characterDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterDetailsFragment"
+        android:name="com.example.rickandmortydictionary.presentation.fragments.CharacterDetailsFragment"
+        android:label="fragment_character_details"
+        tools:layout="@layout/fragment_character_details" >
+        <argument
+            android:name="character_id"
+            app:argType="integer" />
+    </fragment>
 </navigation>
