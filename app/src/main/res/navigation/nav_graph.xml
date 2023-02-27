@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
+    android:label="@string/app_name"
     app:startDestination="@id/helloFragment">
     <fragment
         android:id="@+id/helloFragment"
         android:name="com.example.rickandmortydictionary.presentation.fragments.HelloFragment"
-        tools:layout="@layout/fragment_hello" >
+        tools:layout="@layout/fragment_hello">
         <action
             android:id="@+id/action_helloFragment_to_mainFragment"
             app:destination="@id/mainFragment"
@@ -19,7 +20,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.rickandmortydictionary.presentation.fragments.MainFragment"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_characterDetailsFragment"
             app:destination="@id/characterDetailsFragment"
@@ -31,8 +32,8 @@
     <fragment
         android:id="@+id/characterDetailsFragment"
         android:name="com.example.rickandmortydictionary.presentation.fragments.CharacterDetailsFragment"
-        android:label="fragment_character_details"
-        tools:layout="@layout/fragment_character_details" >
+        android:label="@string/character_details_title_label"
+        tools:layout="@layout/fragment_character_details">
         <argument
             android:name="character_id"
             app:argType="integer" />

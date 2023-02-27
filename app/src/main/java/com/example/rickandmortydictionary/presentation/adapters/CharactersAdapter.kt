@@ -9,14 +9,15 @@ import com.example.rickandmortydictionary.presentation.viewholders.CharacterView
 
 class CharactersAdapter(private val list: List<CharacterSmall>) : RecyclerView.Adapter<CharacterViewHolder>() {
 
+    var onItemClickListener : ((Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val binding = CharacterItemBinding.inflate(LayoutInflater.from(parent.context))
-
         return CharacterViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        holder.bind(list[position], position)
+        holder.bind(list[position], position, onItemClickListener)
     }
 
     override fun getItemCount(): Int {

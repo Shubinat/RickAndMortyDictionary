@@ -4,6 +4,8 @@ import android.app.Activity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.*
+import com.example.rickandmortydictionary.data.remote.NetworkResult
+import com.example.rickandmortydictionary.data.remote.Status
 import com.example.rickandmortydictionary.domain.api.CharacterResponse
 import com.example.rickandmortydictionary.domain.api.CharacterSmall
 import com.example.rickandmortydictionary.domain.repository.CharacterRepository
@@ -112,12 +114,23 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private fun onLoadCharacters(response: CharacterResponse, name: String) {
+    private fun onLoadCharacters(response: NetworkResult<CharacterResponse?>, name: String) {
         if (tempSearchRequest != name) {
             page = 1
         }
-        _characters.value = response.results
-        pagesCount = response.info.pages
-        tempSearchRequest = name
+        when(response.status) {
+            Status.SUCCESS -> {
+                with(response.data!!) {
+                    _characters.value = results
+                    pagesCount = info.pages
+                }
+                tempSearchRequest = name
+            }
+            Status.ERROR -> {
+                _characters.value = emptyList()
+                pagesCount = 0
+            }
+        }
+
     }
 }

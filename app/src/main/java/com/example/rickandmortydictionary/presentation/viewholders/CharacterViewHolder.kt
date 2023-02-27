@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 
 class CharacterViewHolder(private val binding: CharacterItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(character: CharacterSmall, position: Int) {
+    fun bind(character: CharacterSmall, position: Int, onItemClickListener: ((Int) -> Unit)?) {
         with(binding) {
             if (position == 0) {
                 setupTopMargin(FIRST_TOP_MARGIN)
@@ -22,6 +22,9 @@ class CharacterViewHolder(private val binding: CharacterItemBinding) :
             tvGenderValue.text = character.gender
             tvSpeciesValue.text = character.species
             tvStatusValue.text = character.status
+            cvElement.setOnClickListener {
+                onItemClickListener?.invoke(character.id)
+            }
             Picasso.get().load(character.imageUrl).into(imgPhoto)
         }
     }

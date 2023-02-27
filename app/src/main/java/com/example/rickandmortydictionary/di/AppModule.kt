@@ -41,5 +41,4 @@ object AppModule {
         return retrofit.create(RickAndMortyApi::class.java)
     }
 
-
 }

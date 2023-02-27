@@ -17,10 +17,14 @@
     <string name="fragment_main_button_previous">Previous</string>
     <string name="fragment_main_button_next">Next</string>
     <!-- character_details_fragment -->
+    <string name="character_details_title_label">Details</string>
     <string name="character_details_fragment_status_label">Status</string>
     <string name="character_details_fragment_species_label">Species</string>
     <string name="character_details_fragment_gender_label">Gender</string>
     <string name="character_details_fragment_origin_label">Origin location</string>
     <string name="character_details_fragment_location_label">Last known location</string>
     <string name="character_details_fragment_episodes_label">Appears in the following episodes:</string>
+
+    <string name="network_no_data_error">No data</string>
+    <string name="network_code_error">Has occurred an error. Try again later.</string>
 </resources>
