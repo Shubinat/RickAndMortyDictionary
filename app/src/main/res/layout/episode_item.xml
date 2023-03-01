@@ -1,30 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_episode_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="1dp"
-        android:layout_weight="1"
-        android:background="@drawable/cell_shape_primary"
-        android:gravity="center"
-        android:padding="1dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        tools:ignore="TextContrastCheck"
-        tools:text="Episode 3" />
-
-    <TextView
         android:id="@+id/tv_episode_name"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
-        android:layout_weight="6"
         android:background="@drawable/cell_shape_secondary"
         android:padding="1dp"
         tools:text="Anatomy Park" />
-</TableRow>
+</FrameLayout>

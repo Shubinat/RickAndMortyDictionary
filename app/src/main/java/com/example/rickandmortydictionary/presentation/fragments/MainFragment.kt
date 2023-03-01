@@ -12,6 +12,8 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.rickandmortydictionary.databinding.FragmentMainBinding
 import com.example.rickandmortydictionary.presentation.adapters.CharactersAdapter
@@ -21,7 +23,6 @@ import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
 
-@AndroidEntryPoint
 class MainFragment : Fragment() {
 
 
@@ -29,7 +30,9 @@ class MainFragment : Fragment() {
     private val binding: FragmentMainBinding
         get() = _binding ?: throw RuntimeException("FragmentMainBinding == null")
 
-    private val viewModel: MainViewModel by viewModels({ this })
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
 
 
     override fun onCreateView(

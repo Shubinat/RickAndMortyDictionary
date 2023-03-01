@@ -25,7 +25,8 @@ class CharacterDetailsFragment : Fragment() {
     private val args by navArgs<CharacterDetailsFragmentArgs>()
 
     private val viewModel: DetailsViewModel by lazy {
-        val viewModelFactory = DetailsViewModelFactory(args.characterId)
+        val viewModelFactory =
+            DetailsViewModelFactory(requireActivity().application, args.characterId)
         ViewModelProvider(this, viewModelFactory)[DetailsViewModel::class.java]
     }
 
@@ -39,16 +40,33 @@ class CharacterDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.isBusy.observe(viewLifecycleOwner) {
+            if(it) {
+                binding.viewContent.visibility = View.INVISIBLE
+                binding.frameLoading.visibility = View.VISIBLE
+            } else {
+                binding.viewContent.visibility = View.VISIBLE
+                binding.frameLoading.visibility = View.INVISIBLE
+            }
+
+        }
+
         viewModel.character.observe(viewLifecycleOwner) {
             with(binding) {
-                Picasso.get().load(it.imageUrl).into(imagePhoto)
-                tvName.text = it.name
-                tvStatusValue.text = it.status
-                tvSpeciesValue.text = it.species
-                tvGenderValue.text = it.gender
-                tvOriginValue.text = it.origin.name
-                tvLocationValue.text = it.location.name
-                rvEpisodes.adapter = EpisodesAdapter(it.episodes)
+                if(it != null) {
+                    Picasso.get().load(it.imageUrl).into(imagePhoto)
+                    tvName.text = it.name
+                    tvStatusValue.text = it.status
+                    tvSpeciesValue.text = it.species
+                    tvGenderValue.text = it.gender
+                    tvOriginValue.text = it.origin.name
+                    tvLocationValue.text = it.location.name
+                    rvEpisodes.adapter = EpisodesAdapter(it.episodes)
+
+                } else {
+                    parentFragmentManager.popBackStack()
+                }
+
             }
         }
         viewModel.loadCharacter()
