@@ -1,15 +1,18 @@
 package com.example.rickandmortydictionary.data.remote
 
+import com.example.rickandmortydictionary.domain.api.CharacterDetailsResponse
 import com.example.rickandmortydictionary.domain.api.CharacterResponse
-import retrofit2.Call
+import com.example.rickandmortydictionary.domain.api.Episode
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RickAndMortyApi {
     @GET("character")
-    suspend fun searchCharacters(@Query("name") name: String, @Query("page") page : Int): CharacterResponse
-    @GET("location")
-    suspend fun getLocations(@Query("page") page : Int): Call<Any>
-    @GET("episode")
-    suspend fun getEpisodes(@Query("page") page : Int): Call<Any>
+    suspend fun searchCharacters(@Query("name") name: String, @Query("page") page : Int): Response<CharacterResponse>
+    @GET("character/{id}")
+    suspend fun getCharacter(@Path("id") id : Int): Response<CharacterDetailsResponse>
+    @GET("episode/{id}")
+    suspend fun getEpisode(@Path("id") id : Int): Response<Episode>
 }

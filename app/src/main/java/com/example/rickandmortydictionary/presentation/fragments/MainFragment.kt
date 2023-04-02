@@ -2,24 +2,22 @@ package com.example.rickandmortydictionary.presentation.fragments
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.rickandmortydictionary.databinding.FragmentMainBinding
 import com.example.rickandmortydictionary.presentation.adapters.CharactersAdapter
 import com.example.rickandmortydictionary.presentation.viewmodels.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
 
-@AndroidEntryPoint
 class MainFragment : Fragment() {
 
 
@@ -27,13 +25,10 @@ class MainFragment : Fragment() {
     private val binding: FragmentMainBinding
         get() = _binding ?: throw RuntimeException("FragmentMainBinding == null")
 
-    private val viewModel: MainViewModel by viewModels<MainViewModel>({ this })
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        observeViewModel()
-        setupClickListeners()
-        setupSearchView()
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +36,27 @@ class MainFragment : Fragment() {
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        observeViewModel()
+        setupClickListeners()
+        setupSearchView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupSearchView() {
@@ -72,12 +88,24 @@ class MainFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.characters.observe(viewLifecycleOwner) {
-            binding.rvCharacters.adapter = ScaleInAnimationAdapter(CharactersAdapter(it)).apply {
-                setDuration(500)
-                setInterpolator(OvershootInterpolator())
-                setFirstOnly(false)
+        viewModel.characters.observe(viewLifecycleOwner) { it ->
+            val characterAdapter = CharactersAdapter(it).apply {
+                onItemClickListener = { id ->
+                    findNavController().navigate(
+                        MainFragmentDirections.actionMainFragmentToCharacterDetailsFragment(id)
+                    )
+                }
             }
+            val oldAdapter = ((binding.rvCharacters.adapter as ScaleInAnimationAdapter?)
+                ?.wrappedAdapter as CharactersAdapter?)
+            if (characterAdapter.list != oldAdapter?.list) {
+                binding.rvCharacters.adapter = ScaleInAnimationAdapter(characterAdapter).apply {
+                    setDuration(500)
+                    setInterpolator(OvershootInterpolator())
+                    setFirstOnly(false)
+                }
+            }
+
         }
         viewModel.hasPreviousPage.observe(viewLifecycleOwner) {
             binding.buttonPrev.isVisible = it
@@ -90,11 +118,6 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun hideKeyboard(activity: Activity) {
         val imm: InputMethodManager =
             activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -104,4 +127,5 @@ class MainFragment : Fragment() {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 }

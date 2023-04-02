@@ -1,9 +1,13 @@
 package com.example.rickandmortydictionary.presentation.viewmodels
 
 import android.app.Activity
+import android.app.Application
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.*
+import com.example.rickandmortydictionary.RickAndMortyDictionaryApplication
+import com.example.rickandmortydictionary.data.remote.NetworkResult
+import com.example.rickandmortydictionary.data.remote.Status
 import com.example.rickandmortydictionary.domain.api.CharacterResponse
 import com.example.rickandmortydictionary.domain.api.CharacterSmall
 import com.example.rickandmortydictionary.domain.repository.CharacterRepository
@@ -15,10 +19,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
-    private val repository: CharacterRepository,
-) : ViewModel() {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
+
+
+    @Inject
+    lateinit var repository: CharacterRepository
+
+
+    init {
+        (application as RickAndMortyDictionaryApplication).appComponent.inject(this)
+    }
 
     private var _page: Int = 1
     private var page
@@ -112,12 +122,23 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private fun onLoadCharacters(response: CharacterResponse, name: String) {
+    private fun onLoadCharacters(response: NetworkResult<CharacterResponse?>, name: String) {
         if (tempSearchRequest != name) {
             page = 1
         }
-        _characters.value = response.results
-        pagesCount = response.info.pages
-        tempSearchRequest = name
+        when(response.status) {
+            Status.SUCCESS -> {
+                with(response.data!!) {
+                    _characters.value = results
+                    pagesCount = info.pages
+                }
+                tempSearchRequest = name
+            }
+            Status.ERROR -> {
+                _characters.value = emptyList()
+                pagesCount = 0
+            }
+        }
+
     }
 }
