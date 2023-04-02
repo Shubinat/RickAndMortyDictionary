@@ -2,7 +2,6 @@ package com.example.rickandmortydictionary.presentation.fragments
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.AndroidViewModel
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.rickandmortydictionary.databinding.FragmentMainBinding
 import com.example.rickandmortydictionary.presentation.adapters.CharactersAdapter
 import com.example.rickandmortydictionary.presentation.viewmodels.MainViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter
 
 class MainFragment : Fragment() {
 
@@ -101,12 +96,16 @@ class MainFragment : Fragment() {
                     )
                 }
             }
-
-            binding.rvCharacters.adapter = ScaleInAnimationAdapter(characterAdapter).apply {
-                setDuration(500)
-                setInterpolator(OvershootInterpolator())
-                setFirstOnly(false)
+            val oldAdapter = ((binding.rvCharacters.adapter as ScaleInAnimationAdapter?)
+                ?.wrappedAdapter as CharactersAdapter?)
+            if (characterAdapter.list != oldAdapter?.list) {
+                binding.rvCharacters.adapter = ScaleInAnimationAdapter(characterAdapter).apply {
+                    setDuration(500)
+                    setInterpolator(OvershootInterpolator())
+                    setFirstOnly(false)
+                }
             }
+
         }
         viewModel.hasPreviousPage.observe(viewLifecycleOwner) {
             binding.buttonPrev.isVisible = it
